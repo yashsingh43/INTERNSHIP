@@ -36,4 +36,28 @@ expression_values <- exprs(data_normalized)
 #Create a box plot of normalized expression data
 boxplot(expression_values)
 
+#Analysis for gene expression changes
+
+#Setting which datasets are treatment vs. control
+Treatment <- apply(expression_values[,c("GSM4843.CEL", "GSM4844.CEL")], 1, log)
+
+Control <- apply(expression_values[,c("GSM4845.CEL", "GSM4846.CEL")], 1, log)
+
+#Get back the previous data shape using transpose (because rows and columns flipped in the last step)
+Treatment <- t(Treatment)
+Control <- t(Control)
+
+#Average for treatment and control
+Treatment_Mean <- rowMeans(Treatment)
+Control_Mean <- rowMeans(Control)
+
+#Comparing treatment and control samples to check the up-regulated and down-regulated genes, Fold change analysis
+Treatment_Mean - Control_Mean #output tells changes in treatment sample
+Treatment_Mean / Control_Mean #make sure treatment is before control
+Fold_change <- Treatment_Mean - Control_Mean
+head(Fold_change)
+
+#Up-regulated fold change > +1.5
+#Down-regulated fold change < -1.5
+
 
